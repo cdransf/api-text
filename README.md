@@ -1,94 +1,34 @@
-# `component-name`
+# `<api-text>` web component
 
-A Web Component for…
+A web component to load text from an API and display it.
 
-**[Demo](https://daviddarnes.github.io/component-template/demo.html)** | **[Further reading](https://darn.es/web-component-github-starter-template/)**
+## Example usage
 
-## Examples
-
-General usage example:
+Add the `api-text.js` to your markup and define the necessary markup within your web component:
 
 ```html
-<script type="module" src="component-name.js"></script>
-
-<component-name>
-  <button>Button</button>
-</component-name>
+<script type="module" src="api-text.js"></script>
+<api-text api-url="/api/api-text">
+  <p class="loading text--blurred fade">🎧 Loading...</p>
+  <p class="content fade" style="opacity:0"></p>
+</api-text>
 ```
 
-Example using a fallback method:
+**Example CSS:**
 
-```html
-<script type="module" src="component-name.js"></script>
+```css
+.text--blurred {
+  color: transparent;
+  text-shadow: 0 0 6px var(--text-color);
+}
 
-<component-name>
-  <button>Button</button>
-  <a href="#">Anchor</a>
-</component-name>
-<style>
-  component-name:not(:defined) button,
-  component-name:defined a {
-    display: none;
-  }
-</style>
+.fade {
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
 ```
 
-Example using options or additional fallback method:
+---
 
-```html
-<script type="module" src="component-name.js"></script>
-
-<component-name attribute="value">
-  <button>Button</button>
-</component-name>
-<style>
-  component-name[attribute="value"] {
-    outline: 1px solid red;
-  }
-</style>
-```
-
-## Features
-
-This Web Component allows you to:
-
-- Check for…
-
-## Installation
-
-You have a few options (choose one of these):
-
-1. Install via [npm](https://www.npmjs.com/package/@daviddarnes/component-name): `npm install @daviddarnes/component-name`
-1. [Download the source manually from GitHub](https://github.com/daviddarnes/component-name/releases) into your project.
-1. Skip this step and use the script directly via a 3rd party CDN (not recommended for production use)
-
-### Usage
-
-Make sure you include the `<script>` in your project (choose one of these):
-
-```html
-<!-- Host yourself -->
-<script type="module" src="component-name.js"></script>
-```
-
-```html
-<!-- 3rd party CDN, not recommended for production use -->
-<script
-  type="module"
-  src="https://www.unpkg.com/@daviddarnes/component-name@1.0.0/component-name.js"
-></script>
-```
-
-```html
-<!-- 3rd party CDN, not recommended for production use -->
-<script
-  type="module"
-  src="https://esm.sh/@daviddarnes/component-name@1.0.0"
-></script>
-```
-
-## Credit
-
-With thanks to the following people:
-
-- [Zach Leatherman](https://zachleat.com) for inspiring this [Web Component repo template](https://github.com/daviddarnes/component-template)
+I use this component to load media data from a Netlify edge function and describe an earlier iteration in [this blog post](https://coryd.dev/posts/2024/building-a-bespoke-now-playing-web-component/).
