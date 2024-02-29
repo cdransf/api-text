@@ -29,6 +29,11 @@ class ApiText extends HTMLElement {
     const cacheKey = this.url || 'api-text-cache'
     const cache = sessionStorage?.getItem(cacheKey) || loading.innerHTML
     const loadText = (string) => {
+      if (typeof string === 'undefined') {
+        loading.style.display = 'none'
+        content.style.display = 'none'
+      }
+
       if (string && content.style.opacity !== '1') {
         loading.style.opacity = '0'
         loading.style.display = 'none'
