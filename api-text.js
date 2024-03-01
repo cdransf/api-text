@@ -9,7 +9,7 @@ class ApiText extends HTMLElement {
   }
 
   static attr = {
-    url: 'api-url'
+    url: 'api-url',
   }
 
   get url() {
@@ -34,12 +34,16 @@ class ApiText extends HTMLElement {
         content.style.display = 'none'
       }
 
-      if (string && content.style.opacity !== '1') {
-        loading.style.opacity = '0'
+      if (cache) {
         loading.style.display = 'none'
-        content.style.opacity = '1'
+        content.style.display = 'block'
+      }
+
+      if (string && content.style.display !== 'block') {
+        loading.style.display = 'none'
+        content.style.display = 'block'
         content.innerHTML = value
-      } else if (string && content.style.opacity === '1') {
+      } else if (string && content.style.display === 'block') {
         content.innerHTML = value
       }
     }
