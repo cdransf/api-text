@@ -27,16 +27,16 @@ class ApiText extends HTMLElement {
     const content = this.querySelector('.content')
     const value = data['content']
     const cacheKey = this.url || 'api-text-cache'
-    const cache = sessionStorage?.getItem(cacheKey) || loading.innerHTML
+    const cache = sessionStorage?.getItem(cacheKey)
     const loadText = (string) => {
-      if (typeof string === 'undefined') {
-        loading.style.display = 'none'
-        content.style.display = 'none'
-      }
-
       if (cache) {
         loading.style.display = 'none'
         content.style.display = 'block'
+      }
+
+      if (typeof string === 'undefined') {
+        loading.style.display = 'none'
+        content.style.display = 'none'
       }
 
       if (string && content.style.display !== 'block') {
