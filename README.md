@@ -2,6 +2,10 @@
 
 A web component to load text from an API and display it.
 
+```
+npm i @cdransf/api-text
+```
+
 ## Example usage
 
 Add the `api-text.js` to your markup and define the necessary markup within your web component:
