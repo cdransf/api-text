@@ -1,6 +1,6 @@
 {
   "name": "@cdransf/api-text",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "A web component to load text from an API and display it.",
   "main": "api-text.js",
   "repository": {
@@ -23,7 +23,7 @@
   },
   "author": {
     "name": "Cory Dransfeldt",
-    "email": "coryd@hey.com",
+    "email": "hi@coryd.dev",
     "url": "https://coryd.dev"
   },
   "homepage": "https://github.com/cdransf/api-text#readme"
