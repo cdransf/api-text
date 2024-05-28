@@ -22,21 +22,37 @@ class ApiText extends HTMLElement {
     const content = this.querySelector('.content')
     const cacheKey = this.url || 'api-text-cache'
     const cache = sessionStorage?.getItem(cacheKey)
+
+    const hideElement = () => { this.style.display = 'none' }
+
     const loadText = (string) => {
-      loading.style.display = string ? 'none' : ''
-      content.style.display = string ? 'block' : 'none'
-      if (string) content.innerHTML = string
+      if (!string) {
+        hideElement()
+        return
+      }
+      loading.style.display = 'none'
+      content.style.display = 'block'
+      content.innerHTML = string
     }
 
-    if (cache) loadText(JSON.parse(cache))
+    if (cache) {
+      loadText(JSON.parse(cache))
+    } else {
+      loading.style.display = 'block'
+      content.style.display = 'none'
+    }
 
     try {
       const data = await this.data
       const value = data.content
-      loadText(value)
-      sessionStorage?.setItem(cacheKey, JSON.stringify(value))
+      if (value) {
+        loadText(value)
+        sessionStorage?.setItem(cacheKey, JSON.stringify(value))
+      } else {
+        hideElement()
+      }
     } catch (error) {
-      loadText()
+      hideElement()
     }
   }
 
