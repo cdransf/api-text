@@ -22,12 +22,17 @@ class ApiText extends HTMLElement {
     const content = this.querySelector('.content')
     const cacheKey = this.url || 'api-text-cache'
     const cache = sessionStorage?.getItem(cacheKey)
-
-    const hideElement = () => { this.style.display = 'none' }
+    const noscriptContent = this.querySelector('noscript')?.innerHTML.trim() || ''
 
     const loadText = (string) => {
       if (!string) {
-        hideElement()
+        if (noscriptContent) {
+          content.innerHTML = noscriptContent
+          loading.style.display = 'none'
+          content.style.display = 'block'
+        } else {
+          this.style.display = 'none'
+        }
         return
       }
       loading.style.display = 'none'
@@ -49,10 +54,10 @@ class ApiText extends HTMLElement {
         loadText(value)
         sessionStorage?.setItem(cacheKey, JSON.stringify(value))
       } else {
-        hideElement()
+        loadText('')
       }
     } catch (error) {
-      hideElement()
+      loadText('')
     }
   }
 
