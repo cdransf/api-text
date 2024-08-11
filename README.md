@@ -15,6 +15,9 @@ Add the `api-text.js` to your markup and define the necessary markup within your
 <api-text api-url="/api/now-playing">
   <p class="loading">🎧 Loading...</p>
   <p class="content"></p>
+  <noscript>
+    <!-- Fallback content if JavaScript is disabled; also used as fallback content in the event of an API error. -->
+  </noscript>
 </api-text>
 ```
 
