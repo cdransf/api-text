@@ -21,6 +21,10 @@ Add the `api-text.js` to your markup and define the necessary markup within your
 </api-text>
 ```
 
+Optional attributes:
+
+- **display:** sets the display property of the element when the content is loaded. Default is `block`.
+
 ---
 
 I use this component to load media data from a Netlify edge function and describe an earlier iteration in [this blog post](https://coryd.dev/posts/2024/building-a-bespoke-now-playing-web-component/).

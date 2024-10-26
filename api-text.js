@@ -1,69 +1,83 @@
 class ApiText extends HTMLElement {
-  static tagName = 'api-text'
+  static tagName = "api-text";
 
-  static register(tagName = this.tagName, registry = globalThis.customElements) {
-    registry.define(tagName, this)
+  static register(
+    tagName = this.tagName,
+    registry = globalThis.customElements
+  ) {
+    registry.define(tagName, this);
   }
 
   static attr = {
-    url: 'api-url',
-  }
+    url: "api-url",
+    display: "display",
+  };
 
   get url() {
-    return this.getAttribute(ApiText.attr.url) || ''
+    return this.getAttribute(ApiText.attr.url) || "";
+  }
+
+  get display() {
+    return this.getAttribute(ApiText.attr.display) || "block";
   }
 
   async connectedCallback() {
-    if (this.shadowRoot) return
+    if (this.shadowRoot) return;
 
-    this.attachShadow({ mode: 'open' }).appendChild(document.createElement('slot'))
+    this.attachShadow({ mode: "open" }).appendChild(
+      document.createElement("slot")
+    );
 
-    const loading = this.querySelector('.loading')
-    const content = this.querySelector('.content')
-    const cacheKey = this.url || 'api-text-cache'
-    const cache = sessionStorage?.getItem(cacheKey)
-    const noscriptContent = this.querySelector('noscript')?.innerHTML.trim() || ''
+    const loading = this.querySelector(".loading");
+    const content = this.querySelector(".content");
+    const cacheKey = this.url || "api-text-cache";
+    const cache = sessionStorage?.getItem(cacheKey);
+    const noscriptContent =
+      this.querySelector("noscript")?.innerHTML.trim() || "";
 
     const loadText = (string) => {
       if (!string) {
         if (noscriptContent) {
-          content.innerHTML = noscriptContent
-          loading.style.display = 'none'
-          content.style.display = 'block'
+          content.innerHTML = noscriptContent;
+          loading.style.display = "none";
+          content.style.display = this.display;
         } else {
-          this.style.display = 'none'
+          this.style.display = "none";
         }
-        return
+        return;
       }
-      loading.style.display = 'none'
-      content.style.display = 'block'
-      content.innerHTML = string
-    }
+
+      loading.style.display = "none";
+      content.style.display = this.display;
+      content.innerHTML = string;
+    };
 
     if (cache) {
-      loadText(JSON.parse(cache))
+      loadText(JSON.parse(cache));
     } else {
-      loading.style.display = 'block'
-      content.style.display = 'none'
+      loading.style.display = this.display;
+      content.style.display = "none";
     }
 
     try {
-      const data = await this.data
-      const value = data.content
+      const data = await this.data;
+      const value = data.content;
       if (value) {
-        loadText(value)
-        sessionStorage?.setItem(cacheKey, JSON.stringify(value))
+        loadText(value);
+        sessionStorage?.setItem(cacheKey, JSON.stringify(value));
       } else {
-        loadText('')
+        loadText("");
       }
     } catch (error) {
-      loadText('')
+      loadText("");
     }
   }
 
   get data() {
-    return fetch(this.url).then(response => response.json()).catch(() => ({}))
+    return fetch(this.url)
+      .then((response) => response.json())
+      .catch(() => ({}));
   }
 }
 
-ApiText.register()
+ApiText.register();
