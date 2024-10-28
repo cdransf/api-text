@@ -11,6 +11,7 @@ class ApiText extends HTMLElement {
   static attr = {
     url: "api-url",
     display: "display",
+    storage: "storage",
   };
 
   get url() {
@@ -19,6 +20,11 @@ class ApiText extends HTMLElement {
 
   get display() {
     return this.getAttribute(ApiText.attr.display) || "block";
+  }
+
+  get storage() {
+    const storageValue = this.getAttribute(ApiText.attr.storage);
+    return storageValue === "local" ? localStorage : sessionStorage;
   }
 
   async connectedCallback() {
@@ -31,7 +37,7 @@ class ApiText extends HTMLElement {
     const loading = this.querySelector(".loading");
     const content = this.querySelector(".content");
     const cacheKey = this.url || "api-text-cache";
-    const cache = sessionStorage?.getItem(cacheKey);
+    const cache = this.storage?.getItem(cacheKey);
     const noscriptContent =
       this.querySelector("noscript")?.innerHTML.trim() || "";
 
@@ -64,7 +70,7 @@ class ApiText extends HTMLElement {
       const value = data.content;
       if (value) {
         loadText(value);
-        sessionStorage?.setItem(cacheKey, JSON.stringify(value));
+        this.storage?.setItem(cacheKey, JSON.stringify(value));
       } else {
         loadText("");
       }

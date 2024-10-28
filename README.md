@@ -21,9 +21,10 @@ Add the `api-text.js` to your markup and define the necessary markup within your
 </api-text>
 ```
 
-Optional attributes:
+**Optional attributes:**
 
 - **display:** sets the display property of the element when the content is loaded. Default is `block`.
+- **storage:** sets the storage API to be used. Defaults to `sessionStorage`, but can also be set to "`local` for `localStorage`.
 
 ---
 
