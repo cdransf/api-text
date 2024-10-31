@@ -47,11 +47,9 @@ class ApiText extends HTMLElement {
     this.applyTransition(content);
     this.hideAll(loading, content);
 
-    if (cache) {
-      this.loadContent(JSON.parse(cache), loading, content);
-    } else {
-      this.fetchAndSetContent(loading, content, cacheKey);
-    }
+    if (cache) this.loadContent(JSON.parse(cache), loading, content);
+
+    await this.fetchAndUpdateContent(loading, content, cacheKey);
   }
 
   hideAll(loading, content) {
@@ -91,16 +89,17 @@ class ApiText extends HTMLElement {
     content.style.display = this.display;
   }
 
-  async fetchAndSetContent(loading, content, cacheKey) {
+  async fetchAndUpdateContent(loading, content, cacheKey) {
     try {
       const data = await this.data;
       const value = data.content || "";
 
       if (value) {
         this.storage.setItem(cacheKey, JSON.stringify(value));
+        this.loadContent(value, loading, content);
+      } else {
+        this.loadFallbackContent(loading, content);
       }
-
-      this.loadContent(value, loading, content);
     } catch {
       this.loadFallbackContent(loading, content);
     }
