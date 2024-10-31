@@ -2,7 +2,7 @@
 
 A web component to load text from an API and display it.
 
-```
+```sh
 npm i @cdransf/api-text
 ```
 
@@ -25,6 +25,7 @@ Add the `api-text.js` to your markup and define the necessary markup within your
 
 - **display:** sets the display property of the element when the content is loaded. Default is `block`.
 - **storage:** sets the storage API to be used. Defaults to `sessionStorage`, but can also be set to "`local` for `localStorage`.
+- **transition-duration:** sets the duration of the transition when the content is loaded. Default is `0.3s`.
 
 ---
 
