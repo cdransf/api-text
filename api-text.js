@@ -13,10 +13,18 @@ class ApiText extends HTMLElement {
     display: "display",
     storage: "storage",
     transition: "transition-duration",
+    nocache: "nocache",
   };
 
   get url() {
-    return this.getAttribute(ApiText.attr.url) || "";
+    let baseUrl = this.getAttribute(ApiText.attr.url) || "";
+
+    if (this.hasAttribute(ApiText.attr.nocache)) {
+      const separator = baseUrl.includes("?") ? "&" : "?";
+      baseUrl += `${separator}nocache=${Date.now()}`;
+    }
+
+    return baseUrl;
   }
 
   get display() {
