@@ -17,14 +17,11 @@ class ApiText extends HTMLElement {
   };
 
   get url() {
-    let baseUrl = this.getAttribute(ApiText.attr.url) || "";
+    return this.getAttribute(ApiText.attr.url) || "";
+  }
 
-    if (this.hasAttribute(ApiText.attr.nocache)) {
-      const separator = baseUrl.includes("?") ? "&" : "?";
-      baseUrl += `${separator}nocache=${Date.now()}`;
-    }
-
-    return baseUrl;
+  get cacheKey() {
+    return this.getAttribute(ApiText.attr.url) || "api-text-cache";
   }
 
   get display() {
@@ -49,15 +46,14 @@ class ApiText extends HTMLElement {
 
     const loading = this.querySelector(".loading");
     const content = this.querySelector(".content");
-    const cacheKey = this.url || "api-text-cache";
-    const cache = this.storage.getItem(cacheKey);
+    const cache = this.storage.getItem(this.cacheKey);
 
     this.applyTransition(content);
     this.hideAll(loading, content);
 
     if (cache) this.loadContent(JSON.parse(cache), loading, content);
 
-    await this.fetchAndUpdateContent(loading, content, cacheKey);
+    await this.fetchAndUpdateContent(loading, content);
   }
 
   hideAll(loading, content) {
@@ -97,13 +93,13 @@ class ApiText extends HTMLElement {
     content.style.display = this.display;
   }
 
-  async fetchAndUpdateContent(loading, content, cacheKey) {
+  async fetchAndUpdateContent(loading, content) {
     try {
       const data = await this.data;
       const value = data.content || "";
 
       if (value) {
-        this.storage.setItem(cacheKey, JSON.stringify(value));
+        this.storage.setItem(this.cacheKey, JSON.stringify(value));
         this.loadContent(value, loading, content);
       } else {
         this.loadFallbackContent(loading, content);
@@ -114,7 +110,13 @@ class ApiText extends HTMLElement {
   }
 
   get data() {
-    return fetch(this.url)
+    let requestUrl = this.url;
+    if (this.hasAttribute(ApiText.attr.nocache)) {
+      const separator = requestUrl.includes("?") ? "&" : "?";
+      requestUrl += `${separator}nocache=${Date.now()}`;
+    }
+
+    return fetch(requestUrl)
       .then((response) => response.json())
       .catch(() => ({}));
   }
